@@ -15,7 +15,7 @@ Features: User Signup/Login, Product Listing, Add to Cart, Order Place
 **Database:** SQLite3  
 **Frontend:** HTML, CSS, JavaScript
 
-## Chalane ka tareeka:
+## how to use:
 1. Dependencies install karo
 ```bash
 npm install express sqlite3
