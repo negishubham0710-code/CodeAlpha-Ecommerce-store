@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - CodeAlpha Store</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #f4f4f4; }
+    .form-box { width: 320px; padding: 25px; border: 1px solid #ccc; border-radius: 10px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2 style="text-align:center;">Login</h2>
+    <input type="email" id="email" placeholder="Email daalo">
+    <input type="password" id="password" placeholder="Password daalo">
+    <button onclick="login()">Login</button>
+    <p style="text-align:center; margin-top:15px;">Account nahi hai? <a href="signup.html">Signup karo</a></p>
+  </div>
+
+  <script>
+    function login(){
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      if(!email || !password){
+        alert("Bhai email aur password dono bharo");
+        return;
+      }
+
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({email, password})
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.success){
+          localStorage.setItem('user_id', data.user_id);
+          alert("Login success!");
+          window.location.href = 'index.html';
+        } else {
+          alert("Error: " + data.message);
+        }
+      })
+      .catch(err => alert("Server nahi chal raha"))
+    }
+  </script>
+</body>
+</html>

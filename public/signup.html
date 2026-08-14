@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Signup</h1>
+  <input type="text" id="name" placeholder="Name"><br><br>
+  <input type="email" id="email" placeholder="Email"><br><br>
+  <input type="password" id="password" placeholder="Password"><br><br>
+  <button onclick="signup()">Signup</button>
+
+ <script>
+  function signup(){
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    fetch('/api/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({name, email, password})
+    })
+    .then(res => res.json())
+    .then(data => {
+      alert(data.message);
+      if(data.success) window.location.href = 'login.html';
+    })
+  }
+</script>
+</body>
+</html>

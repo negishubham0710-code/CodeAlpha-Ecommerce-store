@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Your Cart</h1>
+  <div id="cart-items"></div>
+  <h3>Total: ₹<span id="total">0</span></h3>
+  <button onclick="placeOrder()">Place Order</button>
+  <br><br>
+  <a href="index.html"><button>Back to Shop</button></a>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const div = document.getElementById('cart-items');
+    let total = 0;
+    
+    if(cart.length === 0){
+      div.innerHTML = "<p>Cart khali hai</p>";
+    } else {
+      cart.forEach(item => {
+        div.innerHTML += `<div class="product"><h3>${item.name}</h3><p>₹${item.price}</p></div>`
+        total += item.price;
+      })
+    }
+    document.getElementById('total').innerText = total;
+
+    function placeOrder(){
+      let user_id = localStorage.getItem('user_id') || 1;
+      fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: user_id, cart: cart, total: total })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        localStorage.removeItem('cart');
+        window.location.href = 'index.html';
+      })
+    }
+  </script>
+</body>
+</html>
